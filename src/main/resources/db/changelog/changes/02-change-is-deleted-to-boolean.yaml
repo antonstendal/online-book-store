@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 02-change-is-deleted-to-boolean
+      author: anton
+      changes:
+        - modifyDataType:
+            tableName: books
+            columnName: is_deleted
+            newDataType: BOOLEAN
