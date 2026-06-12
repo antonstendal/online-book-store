@@ -23,9 +23,6 @@ public class CreateBookRequestDto {
     private String isbn;
     @Positive(message = "Price must be greater than 0")
     private BigDecimal price;
-    @NotBlank(message = "Description can't be empty")
-    @Size(max = 1000)
     private String description;
-    @NotBlank(message = "Cover image can't be empty")
     private String coverImage;
 }
