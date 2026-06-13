@@ -11,6 +11,8 @@ import com.example.onlinebookstore.repository.book.BookSpecificationBuilder;
 import com.example.onlinebookstore.service.BookService;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -28,10 +30,9 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDto> getAll() {
-        return repository.findAll().stream()
-                .map(mapper::mapToResponse)
-                .toList();
+    public Page<BookDto> getAll(Pageable pageable) {
+        return repository.findAll(pageable)
+                .map(mapper::mapToResponse);
     }
 
     @Override
