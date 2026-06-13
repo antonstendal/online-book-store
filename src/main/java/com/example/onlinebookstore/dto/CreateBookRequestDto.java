@@ -1,6 +1,7 @@
 package com.example.onlinebookstore.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
@@ -22,6 +23,7 @@ public class CreateBookRequestDto {
     @Size(max = 13, message = "To long Isbn")
     private String isbn;
     @Positive(message = "Price must be greater than 0")
+    @NotNull
     private BigDecimal price;
     private String description;
     private String coverImage;
