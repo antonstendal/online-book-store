@@ -1,6 +1,6 @@
 package com.example.onlinebookstore.exception;
 
-import com.example.onlinebookstore.dto.ErrorResponseDto;
+import com.example.onlinebookstore.dto.book.ErrorResponseDto;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,11 +30,20 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorResponseDto> handleEntityNotFound(
             EntityNotFoundException ex) {
-        ErrorResponseDto errorResponse = new ErrorResponseDto(
-                HttpStatus.NOT_FOUND.name(),
-                ex.getMessage(),
-                LocalDateTime.now()
+        return buildErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(RegistrationException.class)
+    public ResponseEntity<ErrorResponseDto> handleRegistrationException(
+            RegistrationException ex) {
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    private ResponseEntity<ErrorResponseDto> buildErrorResponse(
+            HttpStatus status, String message) {
+        return new ResponseEntity<>(
+                new ErrorResponseDto(status.name(), message, LocalDateTime.now()),
+                status
         );
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 }
