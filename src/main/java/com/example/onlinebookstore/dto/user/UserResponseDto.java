@@ -1,6 +1,6 @@
 package com.example.onlinebookstore.dto.user;
 
-public record UserDto(
+public record UserResponseDto(
         Long id,
         String email,
         String firstName,

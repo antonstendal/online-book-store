@@ -36,7 +36,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RegistrationException.class)
     public ResponseEntity<ErrorResponseDto> handleRegistrationException(
             RegistrationException ex) {
-        return buildErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+        return buildErrorResponse(HttpStatus.CONFLICT, ex.getMessage());
     }
 
     private ResponseEntity<ErrorResponseDto> buildErrorResponse(

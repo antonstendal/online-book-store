@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 03-drop-not-null-shipping-address
+      author: anton
+      changes:
+        - dropNotNullConstraint:
+            tableName: users
+            columnName: shipping_address
+            columnDataType: VARCHAR(255)

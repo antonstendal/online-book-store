@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 @FieldMatch(
         field = "password",
         fieldMatch = "repeatPassword")
-public record CreateUserRequestDto(
+public record UserRegistrationRequestDto(
         @Email
         @NotBlank
         String email,
@@ -19,7 +19,6 @@ public record CreateUserRequestDto(
         String repeatPassword,
         @NotBlank
         String firstName,
-        @NotBlank
         String lastName,
         @NotBlank
         String shippingAddress

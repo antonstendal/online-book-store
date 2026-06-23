@@ -1,12 +1,11 @@
 package com.example.onlinebookstore.service;
 
-import com.example.onlinebookstore.dto.user.CreateUserRequestDto;
-import com.example.onlinebookstore.dto.user.UserDto;
-import java.util.List;
+import com.example.onlinebookstore.dto.user.UserRegistrationRequestDto;
+import com.example.onlinebookstore.dto.user.UserResponseDto;
+import com.example.onlinebookstore.exception.RegistrationException;
 
 public interface UserService {
 
-    UserDto saveUser(CreateUserRequestDto requestDto);
-
-    List<UserDto> getAllUsers();
+    UserResponseDto register(UserRegistrationRequestDto requestDto)
+            throws RegistrationException;
 }
