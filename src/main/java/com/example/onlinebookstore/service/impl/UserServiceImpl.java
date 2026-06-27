@@ -2,9 +2,12 @@ package com.example.onlinebookstore.service.impl;
 
 import com.example.onlinebookstore.dto.user.UserRegistrationRequestDto;
 import com.example.onlinebookstore.dto.user.UserResponseDto;
+import com.example.onlinebookstore.exception.DataProcessingException;
 import com.example.onlinebookstore.exception.RegistrationException;
 import com.example.onlinebookstore.mapper.UserMapper;
+import com.example.onlinebookstore.model.Role;
 import com.example.onlinebookstore.model.User;
+import com.example.onlinebookstore.repository.RoleRepository;
 import com.example.onlinebookstore.repository.user.UserRepository;
 import com.example.onlinebookstore.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +20,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
     @Override
     public UserResponseDto register(UserRegistrationRequestDto requestDto)
@@ -30,6 +34,10 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(requestDto.password()));
         user.setFirstName(requestDto.firstName());
         user.setLastName(requestDto.lastName());
+        user.setShippingAddress(requestDto.shippingAddress());
+        Role role = roleRepository.findByRole(Role.RoleName.USER).orElseThrow(
+                () -> new DataProcessingException("Role USER not found"));
+        user.getRoles().add(role);
         return userMapper.mapToResponse(userRepository.save(user));
     }
 }
