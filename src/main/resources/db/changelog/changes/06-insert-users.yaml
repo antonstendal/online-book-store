@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: 07-insert-users
+      author: anton
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: email
+                  value: admin@gmail.com
+              - column:
+                  name: password
+                  value: $2a$10$HUn3eusJT2A0mQYSpd.Keetg1Ltj3KqnBq4khmX.TIBbTG94.LpGe
+              - column:
+                  name: first_name
+                  value: Bob
+              - column:
+                  name: last_name
+                  value: Thornton
+              - column:
+                  name: shipping_address
+                  value: USA NY Street 1
+
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: email
+                  value: user@gmail.com
+              - column:
+                  name: password
+                  value: $2a$10$Be3VwMvcz6gYMca5IclKHOxL3HP428DUtDkL/NW8N5oakp3fbMO9W
+              - column:
+                  name: first_name
+                  value: Alice
+              - column:
+                  name: last_name
+                  value: Crown
+              - column:
+                  name: shipping_address
+                  value: Australia Sydney
