@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "User management", description = "Endpoints for authentication users")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthentificationController {
     private final UserService userService;
 
     @Operation(summary = "Registration", description = "New user registration")
-    @PostMapping("/registration")
+    @PostMapping("/register")
     public UserResponseDto register(@RequestBody @Valid UserRegistrationRequestDto request)
             throws RegistrationException {
         return userService.register(request);
