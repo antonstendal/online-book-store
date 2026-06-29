@@ -10,11 +10,14 @@ import com.example.onlinebookstore.model.User;
 import com.example.onlinebookstore.repository.RoleRepository;
 import com.example.onlinebookstore.repository.user.UserRepository;
 import com.example.onlinebookstore.service.UserService;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
@@ -29,15 +32,11 @@ public class UserServiceImpl implements UserService {
             throw new RegistrationException("User with email "
                     + requestDto.email() + " already exist");
         }
-        User user = new User();
-        user.setEmail(requestDto.email());
+        User user = userMapper.mapToModel(requestDto);
         user.setPassword(passwordEncoder.encode(requestDto.password()));
-        user.setFirstName(requestDto.firstName());
-        user.setLastName(requestDto.lastName());
-        user.setShippingAddress(requestDto.shippingAddress());
         Role role = roleRepository.findByRole(Role.RoleName.USER).orElseThrow(
-                () -> new DataProcessingException("Role USER not found"));
-        user.getRoles().add(role);
+                () -> new DataProcessingException("Role " + Role.RoleName.USER + " not found"));
+        user.setRoles(Set.of(role));
         return userMapper.mapToResponse(userRepository.save(user));
     }
 }
