@@ -7,6 +7,7 @@ import com.example.onlinebookstore.service.AuthentificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,10 +18,9 @@ public class AuthentificationServiceImpl implements AuthentificationService {
 
     @Override
     public UserLoginResponseDto authenticate(UserLoginRequestDto requestDto) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(requestDto.email(), requestDto.password())
-        );
-        String token = jwtUtil.generateToken(requestDto.email());
+        final Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(requestDto.email(), requestDto.password()));
+        String token = jwtUtil.generateToken(authentication.getName());
         return new UserLoginResponseDto(token);
     }
 }
