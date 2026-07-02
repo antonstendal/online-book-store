@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-categories
+      author: anton
+      changes:
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: Programming
+              - column:
+                  name: description
+                  value: Programming books
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: Fiction
+              - column:
+                  name: description
+                  value: Fiction books
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: Science
+              - column:
+                  name: description
+                  value: Science books
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
