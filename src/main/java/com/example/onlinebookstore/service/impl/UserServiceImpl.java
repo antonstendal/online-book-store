@@ -6,10 +6,10 @@ import com.example.onlinebookstore.exception.DataProcessingException;
 import com.example.onlinebookstore.exception.RegistrationException;
 import com.example.onlinebookstore.mapper.UserMapper;
 import com.example.onlinebookstore.model.Role;
-import com.example.onlinebookstore.model.ShoppingCart;
 import com.example.onlinebookstore.model.User;
 import com.example.onlinebookstore.repository.RoleRepository;
 import com.example.onlinebookstore.repository.user.UserRepository;
+import com.example.onlinebookstore.service.ShoppingCartService;
 import com.example.onlinebookstore.service.UserService;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +25,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final ShoppingCartService shoppingCartService;
 
     @Override
     public UserResponseDto register(UserRegistrationRequestDto requestDto)
@@ -38,8 +39,7 @@ public class UserServiceImpl implements UserService {
         Role role = roleRepository.findByRole(Role.RoleName.USER).orElseThrow(
                 () -> new DataProcessingException("Role " + Role.RoleName.USER + " not found"));
         user.setRoles(Set.of(role));
-        ShoppingCart shoppingCart = new ShoppingCart();
-        user.setShoppingCart(shoppingCart);
+        shoppingCartService.createShoppingCart(user);
         return userMapper.mapToResponse(userRepository.save(user));
     }
 }
