@@ -4,8 +4,8 @@ import com.example.onlinebookstore.dto.order.OrderItemResponseDto;
 import com.example.onlinebookstore.dto.order.OrderRequestDto;
 import com.example.onlinebookstore.dto.order.OrderResponseDto;
 import com.example.onlinebookstore.dto.order.OrderStatusUpdateDto;
-import com.example.onlinebookstore.exception.DataProcessingException;
 import com.example.onlinebookstore.exception.EntityNotFoundException;
+import com.example.onlinebookstore.exception.OrderProcessingException;
 import com.example.onlinebookstore.mapper.OrderItemMapper;
 import com.example.onlinebookstore.mapper.OrderMapper;
 import com.example.onlinebookstore.model.CartItem;
@@ -28,7 +28,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @RequiredArgsConstructor
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -42,11 +44,13 @@ public class OrderServiceImpl implements OrderService {
         User currentUser = getCurrentUser();
         ShoppingCart shoppingCart = shoppingCartRepository
                 .findByUserIdWithItems(currentUser.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Shopping cart not found"));
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Shopping cart for user " + currentUser.getId() + " not found"));
 
         Set<CartItem> cartItems = shoppingCart.getCartItems();
         if (cartItems.isEmpty()) {
-            throw new DataProcessingException("Shopping cart is empty");
+            throw new OrderProcessingException(
+                    "Shopping cart for user " + currentUser.getId() + " is empty");
         }
         BigDecimal total = cartItems.stream()
                 .map(cartItem ->
@@ -83,7 +87,8 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderItemResponseDto> getOrderItems(Long orderId) {
         User currentUser = getCurrentUser();
         Order order = orderRepository.findByIdAndUserId(orderId, currentUser.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Order not found"));
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Order with id " + orderId + " not found"));
         return order.getOrderItems().stream().map(orderItemMapper::toDto).toList();
     }
 
@@ -91,7 +96,8 @@ public class OrderServiceImpl implements OrderService {
     public OrderItemResponseDto getSingleOrderItem(Long orderId, Long itemId) {
         User currentUser = getCurrentUser();
         Order order = orderRepository.findByIdAndUserId(orderId, currentUser.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Order not found"));
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Order with id " + orderId + " not found"));
         Set<OrderItem> orderItems = order.getOrderItems();
         return orderItemMapper.toDto(orderItems
                 .stream()
@@ -102,11 +108,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderResponseDto updateOrderStatus(Long orderId, OrderStatusUpdateDto requestDto) {
-        Order order = orderRepository.findById(orderId).orElseThrow(
+        Order existingOrder = orderRepository.findById(orderId).orElseThrow(
                 () -> new EntityNotFoundException("Order with id " + orderId + " not found"));
-        order.setStatus(requestDto.status());
-        Order saved = orderRepository.save(order);
-        return orderMapper.toDto(saved);
+        existingOrder.setStatus(requestDto.status());
+        Order updatedOrder = orderRepository.save(existingOrder);
+        return orderMapper.toDto(updatedOrder);
     }
 
     private User getCurrentUser() {
