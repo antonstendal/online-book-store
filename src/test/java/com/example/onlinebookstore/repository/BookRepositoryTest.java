@@ -34,7 +34,8 @@ public class BookRepositoryTest {
         Assertions.assertAll(
                 () -> Assertions.assertEquals("Robert C. Martin", actual.get(0).getAuthor()),
                 () -> Assertions.assertEquals("Clean Code", actual.get(0).getTitle()),
-                () -> Assertions.assertEquals("A handbook of agile software craftsmanship", actual.get(0).getDescription()),
+                () -> Assertions.assertEquals("A handbook of agile software craftsmanship",
+                        actual.get(0).getDescription()),
                 () -> Assertions.assertEquals(BigDecimal.valueOf(129.99), actual.get(0).getPrice()),
                 () -> Assertions.assertEquals("clean_code.jpg", actual.get(0).getCoverImage()),
                 () -> Assertions.assertEquals("9780132350884", actual.get(0).getIsbn())

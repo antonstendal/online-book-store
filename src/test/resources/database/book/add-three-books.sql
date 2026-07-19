@@ -1,14 +1,20 @@
-insert into books (title, author, isbn, price, description, cover_image, is_deleted)
-values
-('Clean Code', 'Robert C. Martin', '9780132350884', 129.99,
- 'A handbook of agile software craftsmanship', 'clean_code.jpg', 0);
+INSERT INTO books
+(id, title, author, isbn, price, description, cover_image, is_deleted)
+VALUES
+(1, 'Clean Code', 'Robert C. Martin', '9780132350884',
+ 129.99, 'A handbook of agile software craftsmanship',
+ 'clean_code.jpg', 0);
 
-insert into books (title, author, isbn, price, description, cover_image, is_deleted)
-values
-('The Hobbit', 'J.R.R. Tolkien', '9780261102217', 59.99,
- 'Fantasy novel about Bilbo Baggins adventure', 'hobbit.jpg', 0);
+INSERT INTO books
+(id, title, author, isbn, price, description, cover_image, is_deleted)
+VALUES
+(2, 'Effective Java', 'Joshua Bloch', '9780134685991',
+ 149.99, 'Best practices for the Java platform',
+ 'effective_java.jpg', 0);
 
-insert into books (title, author, isbn, price, description, cover_image, is_deleted)
-values
-('A Brief History of Time', 'Stephen Hawking', '9780553380163', 89.99,
- 'Cosmology explained for general readers', 'brief_history.jpg', 0);
+INSERT INTO books
+(id, title, author, isbn, price, description, cover_image, is_deleted)
+VALUES
+(3, 'Spring in Action', 'Craig Walls', '9781617297571',
+ 159.99, 'Comprehensive guide to Spring Framework',
+ 'spring_in_action.jpg', 0);
