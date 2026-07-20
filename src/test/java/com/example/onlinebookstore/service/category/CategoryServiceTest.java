@@ -51,32 +51,32 @@ class CategoryServiceTest {
     @Test
     @DisplayName("Find all categories with existing categories returns page of CategoryDto")
     void findAll_WithExistingCategories_ReturnsPageOfCategoryDto() {
-        Category category1 = new Category();
-        category1.setName("Programming");
-        category1.setDescription("Programming description here...");
-        Category category2 = new Category();
-        category2.setName("Adventure");
-        category2.setDescription("Adventure description here...");
+        Category firstCategory = new Category();
+        firstCategory.setName("Programming");
+        firstCategory.setDescription("Programming description here...");
+        Category secondCategory = new Category();
+        secondCategory.setName("Adventure");
+        secondCategory.setDescription("Adventure description here...");
 
         CategoryDto categoryDto1 = new CategoryDto(
-                category1.getId(),
-                category1.getName(),
-                category1.getDescription()
+                firstCategory.getId(),
+                firstCategory.getName(),
+                firstCategory.getDescription()
         );
 
         CategoryDto categoryDto2 = new CategoryDto(
-                category2.getId(),
-                category2.getName(),
-                category2.getDescription()
+                secondCategory.getId(),
+                secondCategory.getName(),
+                secondCategory.getDescription()
         );
 
         PageRequest pageable = PageRequest.of(0, 2);
-        List<Category> categories = List.of(category1, category2);
+        List<Category> categories = List.of(firstCategory, secondCategory);
         Page<Category> page = new PageImpl<>(categories, pageable, categories.size());
 
         when(categoryRepository.findAll(pageable)).thenReturn(page);
-        when(categoryMapper.toDto(category1)).thenReturn(categoryDto1);
-        when(categoryMapper.toDto(category2)).thenReturn(categoryDto2);
+        when(categoryMapper.toDto(firstCategory)).thenReturn(categoryDto1);
+        when(categoryMapper.toDto(secondCategory)).thenReturn(categoryDto2);
 
         Page<CategoryDto> actual = categoryService.findAll(pageable);
 
@@ -85,8 +85,8 @@ class CategoryServiceTest {
         assertThat(actual.getContent().get(1)).isEqualTo(categoryDto2);
         assertThat(actual.getSize()).isEqualTo(2);
         assertThat(actual.getTotalElements()).isEqualTo(2);
-        verify(categoryMapper).toDto(category1);
-        verify(categoryMapper).toDto(category2);
+        verify(categoryMapper).toDto(firstCategory);
+        verify(categoryMapper).toDto(secondCategory);
         verify(categoryRepository, times(1)).findAll(pageable);
         verifyNoMoreInteractions(categoryRepository, categoryMapper);
     }

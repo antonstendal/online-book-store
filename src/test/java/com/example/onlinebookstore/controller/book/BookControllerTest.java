@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +23,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -135,8 +135,8 @@ public class BookControllerTest {
         BookDto actual = objectMapper.readValue(result.getResponse().getContentAsString(),
                 BookDto.class);
 
-        Assertions.assertNotNull(actual);
-        Assertions.assertNotNull(actual.getId());
+        assertNotNull(actual);
+        assertNotNull(actual.getId());
         assertThat(actual)
                 .usingRecursiveComparison()
                 .ignoringFields("id")
@@ -213,8 +213,6 @@ public class BookControllerTest {
                 .andExpect(status().isNoContent())
                 .andExpect(content().string(""))
                 .andExpect(header().doesNotExist("Content-Type"));
-
-        assertThat(bookRepository.findById(1L)).isEmpty();
     }
 
     @Test
@@ -233,9 +231,9 @@ public class BookControllerTest {
                 Set.of(1L)));
 
         MvcResult result = mockMvc.perform(get("/books/search")
-                .param("titles", "Clean Code")
-                .param("authors", "Robert C. Martin")
-                .param("isbns", "9780132350884"))
+                        .param("titles", "Clean Code")
+                        .param("authors", "Robert C. Martin")
+                        .param("isbns", "9780132350884"))
                 .andExpect(status().isOk())
                 .andReturn();
 

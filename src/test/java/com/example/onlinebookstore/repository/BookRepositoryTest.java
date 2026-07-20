@@ -12,6 +12,10 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.jdbc.Sql;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Sql(scripts = "classpath:database/clean/remove-all.sql",
@@ -30,8 +34,8 @@ public class BookRepositoryTest {
     void findAllByCategoriesId_ReturnsBooksForGivenCategory_Success() {
         List<Book> actual = bookRepository.findAllByCategoriesId(1L);
 
-        Assertions.assertNotNull(actual);
-        Assertions.assertAll(
+        assertNotNull(actual);
+        assertAll(
                 () -> Assertions.assertEquals("Robert C. Martin", actual.get(0).getAuthor()),
                 () -> Assertions.assertEquals("Clean Code", actual.get(0).getTitle()),
                 () -> Assertions.assertEquals("A handbook of agile software craftsmanship",
@@ -40,7 +44,7 @@ public class BookRepositoryTest {
                 () -> Assertions.assertEquals("clean_code.jpg", actual.get(0).getCoverImage()),
                 () -> Assertions.assertEquals("9780132350884", actual.get(0).getIsbn())
         );
-        Assertions.assertTrue(actual.get(0).getCategories()
+        assertTrue(actual.get(0).getCategories()
                 .stream()
                 .anyMatch(category -> category.getId().equals(1L)));
     }
@@ -50,7 +54,7 @@ public class BookRepositoryTest {
     void findAllByCategoriesId_WhenCategoryDoesNotExist_ReturnsEmptyList() {
         List<Book> actual = bookRepository.findAllByCategoriesId(100L);
 
-        Assertions.assertNotNull(actual);
-        Assertions.assertTrue(actual.isEmpty());
+        assertNotNull(actual);
+        assertTrue(actual.isEmpty());
     }
 }
