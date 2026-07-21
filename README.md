@@ -256,7 +256,7 @@ http://localhost:8080
 
 This project uses Docker Compose to run:
 
-* MySQL 8.0 database
+* MySQL 5 database
 * Spring Boot application
 * Environment variables loaded from a `.env` file
 
@@ -338,6 +338,15 @@ http://localhost:8088
 
 # Swagger Documentation
 
+The project uses Spring Security, you'll need to log in with the following credentials like ADMIN:
+```text
+email: admin@gmail.com --- password: admin123
+```
+log in like USER:
+```text
+email: user@gmail.co --- password: user123
+```
+
 Swagger UI is available at:
 
 ```text
@@ -357,24 +366,8 @@ Run all tests:
 mvn test
 ```
 
-The project contains unit and integration tests covering core business functionality.
+The project contains unit and integration tests covering almost all core business functionality.
+
+
 
 ---
-
-
-# Demo Video
-
-Loom walkthrough:
-
-[Add Loom video link here]
-
-The demo presents:
-
-* User registration
-* User authentication
-* Swagger documentation
-* Book management
-* Shopping cart workflow
-* Order creation process
-
-
